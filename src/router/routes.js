@@ -12,13 +12,23 @@ import BranchSetting from "@/pages/BranchSetting.vue";
 import Typography from "@/pages/Typography.vue";
 import TableList from "@/pages/TableList.vue";
 import Settingproject from "@/pages/Settingproject.vue";
+import Login from "@/pages/Login.vue";
 
 const routes = [
   {
+    path: "/login",
+    component: Login
+  },
+  {
     path: "/",
     component: DashboardLayout,
-    redirect: "/dashboard",
+    redirect: "dashboard",
     children: [
+      {
+        path: "login",
+        name: "login",
+        component: Login
+      },
       {
         path: "dashboard",
         name: "Project",
