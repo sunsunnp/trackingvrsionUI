@@ -11,7 +11,7 @@
       <div class="logo">
         <a href="#" class="simple-text">
             <div class="logo-img">
-                <img src="@/assets/img/vue-logo.png" alt="">
+                <img :src="imglogogit" alt="">
             </div>
           {{title}}
         </a>
@@ -39,12 +39,13 @@
 <script>
 import MovingArrow from "./MovingArrow.vue";
 import SidebarLink from "./SidebarLink";
+import firebase from "firebase";
 export default {
   props: {
-    title: {
-      type: String,
-      default: "Sunsun Np"
-    },
+    // title: {
+    //   type: String,
+    //   default: ''
+    // },
     backgroundColor: {
       type: String,
       default: "black",
@@ -103,7 +104,9 @@ export default {
       windowWidth: 0,
       isWindows: false,
       hasAutoHeight: false,
-      links: []
+      links: [],
+      title: '',
+      imglogogit: ''
     };
   },
   methods: {
@@ -129,7 +132,25 @@ export default {
     this.$watch("$route", this.findActiveLink, {
       immediate: true
     });
-  }
+  },
+    beforeCreate() {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+          this.$router.replace("/")
+          alert("You don't have a permission")
+        }else{
+          this.title = user.displayName;
+          this.imglogogit = user.photoURL;
+			    console.log(user);
+			// axios.get('https://api.github.com/users/'+username+'/repos:read')
+			// .then(res => {
+			// console.log(res)
+			
+			// })
+			// .catch(error => console.log(error))
+        }
+    });
+    }
 };
 </script>
 <style>

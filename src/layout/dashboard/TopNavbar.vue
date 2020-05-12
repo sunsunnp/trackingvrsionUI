@@ -32,9 +32,9 @@
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="ti-mouse-alt"></i>
-              <p>
+              <a @click="logout">
                 Logout
-              </p>
+              </a>
             </a>
           </li>
         </ul>
@@ -42,6 +42,8 @@
     </div></nav>
 </template>
 <script>
+import firebase from "firebase";
+ import router from "../../router"
 export default {
   computed: {
     routeName() {
@@ -69,7 +71,16 @@ export default {
     },
     hideSidebar() {
       this.$sidebar.displaySidebar(false);
-    }
+    },
+      logout() {
+        firebase.auth().signOut().then(function() {
+          // Sign-out successful.
+          alert("Logout success");
+          router.push({ path: '/'})
+        }).catch(function(error) {
+          // An error happened.
+        });
+      }
   }
 };
 </script>

@@ -1,4 +1,5 @@
 import DashboardLayout from "@/layout/dashboard/DashboardLayout.vue";
+
 // GeneralViews
 import NotFound from "@/pages/NotFoundPage.vue";
 
@@ -13,49 +14,50 @@ import Typography from "@/pages/Typography.vue";
 import TableList from "@/pages/TableList.vue";
 import Settingproject from "@/pages/Settingproject.vue";
 import Login from "@/pages/Login.vue";
+import Signin from "@/pages/Signin.vue"
 
 const routes = [
-  {
-    path: "/login",
-    component: Login
-  },
-  {
-    path: "/",
+    {
+      path: "/",
+      name: "login",
+      component: Login
+    },
+    {
+      path: "/signin",
+      name: "signin",
+      component: Signin
+    },
+    {
+    path: "/dashboard",
     component: DashboardLayout,
-    redirect: "dashboard",
     children: [
       {
-        path: "login",
-        name: "login",
-        component: Login
-      },
-      {
-        path: "dashboard",
+        path: "/dashboard/Project",
         name: "Project",
         component: Dashboard
       },
       {
-        path: "stats",
+        path: "/dashboard/stats",
         name: "stats",
         component: UserProfile
       },
       {
-        path: "notifications",
+        path: "/dashboard/notifications",
         name: "notifications",
         component: Notifications
       },
       {
-        path: "icons",
+        path: "/dashboard/icons",
         name: "icons",
         component: Icons
       },
       {
-        path: "maps",
+        path: "/dashboard/maps",
         name: "maps",
         component: Maps
       },
       {
-        path: "branchSetting",
+        path: "/dashboard/branchSetting",
         name: "branchSetting",
         component: BranchSetting
       },
@@ -70,7 +72,7 @@ const routes = [
         component: TableList
       },
       {
-        path: "setting",
+        path: "/dashboard/setting",
         name: "setting",
         component: Settingproject
       }

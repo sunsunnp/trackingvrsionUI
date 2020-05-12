@@ -190,6 +190,25 @@ export default {
         options: {}
       }
     };
+  },
+  methods:{
+    Create() {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+          router.push({ path: '/'})
+          alert("You don't have a permission")
+        }else{
+			    var username = user.displayName;
+			// console.log(username);
+			// axios.get('https://api.github.com/users/'+username+'/repos:read')
+			// .then(res => {
+			// console.log(res)
+			
+			// })
+			// .catch(error => console.log(error))
+        }
+    });
+    }
   }
 };
 </script>

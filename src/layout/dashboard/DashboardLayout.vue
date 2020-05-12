@@ -2,15 +2,15 @@
   <div class="wrapper">
     <side-bar>
       <template slot="links">
-        <sidebar-link to="/dashboard" name="Products" icon="ti-menu-alt"/>
+        <sidebar-link to="/dashboard/Project" name="Products" icon="ti-menu-alt"/>
         <!-- <sidebar-link to="/table-list" name="Repositories List" icon="ti-view-list-alt"/> -->
-        <sidebar-link to="/branchSetting" name="Customers" icon="ti-panel"/>
-        <sidebar-link to="/stats" name="Permissions" icon="ti-user"/>
+        <sidebar-link to="/dashboard/branchSetting" name="Customers" icon="ti-panel"/>
+        <sidebar-link to="/dashboard/stats" name="Permissions" icon="ti-user"/>
         <!-- <sidebar-link to="/typography" name="Typography" icon="ti-text"/> -->
         <!-- <sidebar-link to="/icons" name="Icons" icon="ti-pencil-alt2"/> -->
         <!-- <sidebar-link to="/maps" name="Map" icon="ti-map"/>
         <sidebar-link to="/notifications" name="Notifications" icon="ti-bell"/> -->
-        <sidebar-link to="/setting" name="Repositories Setting" icon="ti-settings"/>
+        <sidebar-link to="/dashboard/setting" name="Repositories Setting" icon="ti-settings"/>
       </template>
       <mobile-menu>
         <li class="nav-item">
