@@ -25,7 +25,7 @@
 <script>
   import HeaderLayout from './header/header.vue'
   import firebase from "firebase";
-  import router from "../router"
+  import router from "../router";
   export default {
     components: {
       HeaderLayout
@@ -43,9 +43,12 @@
         	var token = result.credential.accessToken;
         	// The signed-in user info.
 			var user = result.user;
-			var username = result.additionalUserInfo.username;
-			console.log(result.additionalUserInfo.username);
-			router.push({ path: '/dashboard/Project'})
+			//var username = result.additionalUserInfo.username;
+      console.log(result);
+      var database = firebase.database();
+      var messageRef = database.ref("Users");
+      messageRef.push({username:result.additionalUserInfo.username,email:result.user.email});
+			//router.push({ path: '/dashboard/Project'})
         }).catch(function(error) {
           // Handle Errors here.
           var errorCode = error.code;
