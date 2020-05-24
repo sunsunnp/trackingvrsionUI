@@ -141,7 +141,7 @@ export default {
         }else{
           this.title = user.displayName;
           this.imglogogit = user.photoURL;
-			    console.log(user);
+			    //console.log(user);
 			// axios.get('https://api.github.com/users/'+username+'/repos:read')
 			// .then(res => {
 			// console.log(res)

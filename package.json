@@ -17,6 +17,7 @@
     "es6-promise": "^4.2.4",
     "firebase": "^7.14.3",
     "vue": "^2.6.10",
+    "vue-axios": "^2.1.5",
     "vue-clickaway": "^2.1.0",
     "vue-notifyjs": "^0.3.0",
     "vue-router": "^3.0.1"

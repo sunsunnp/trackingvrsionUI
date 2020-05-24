@@ -26,9 +26,14 @@
   import HeaderLayout from './header/header.vue'
   import firebase from "firebase";
   import router from "../router";
+  import axios from "axios";
+
   export default {
     components: {
       HeaderLayout
+      },
+      data:{
+        usersdb:[]
       },
     methods: {
       loginGit() {
@@ -43,12 +48,34 @@
         	var token = result.credential.accessToken;
         	// The signed-in user info.
 			var user = result.user;
-			//var username = result.additionalUserInfo.username;
-      console.log(result);
+			var usernameinfo = result.additionalUserInfo.username;
+      //console.log(result);
       var database = firebase.database();
       var messageRef = database.ref("Users");
-      messageRef.push({username:result.additionalUserInfo.username,email:result.user.email});
-			//router.push({ path: '/dashboard/Project'})
+      var usersdb = [];
+      var namerepos = [];
+      var fullnamerepos = [];
+      var i,n=0;
+      axios.get('https://api.github.com/users/'+usernameinfo+'/repos')
+			.then(res => {
+        for(i=0;i<res.data.length;i++){
+          namerepos[i] = res.data[i].name;
+          fullnamerepos[i] = "github.com/" + res.data[i].full_name;
+        }
+        messageRef.on('child_added',snapshot=>{
+          usersdb.push(snapshot.val())
+        })
+        for(i=0;i<usersdb.length;i++){
+            if(usernameinfo == usersdb[i].username){
+            n=n+1
+        }
+      }
+      if(n==0){
+        messageRef.push({username:result.additionalUserInfo.username,email:result.user.email,repos:{name:namerepos,fullname:fullnamerepos}});
+      }
+			router.push({ path: '/dashboard/Project'})
+			})
+			.catch(error => console.log(error))
         }).catch(function(error) {
           // Handle Errors here.
           var errorCode = error.code;
@@ -61,7 +88,15 @@
         });
 
       }
-    }
+    },
+    // created(){
+    //   var database = firebase.database();
+    //   var messageRef = database.ref("Users");
+    //   messageRef.on('child_added',snapshot=>{
+    //     this.users.push(snapshot.val())
+    //     console.log(snapshot.val());
+    //   })
+    // }
   }
 </script>
 

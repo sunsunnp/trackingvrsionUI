@@ -17,10 +17,14 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router/index";
 import firebase from 'firebase/app'
+import VueAxios from "vue-axios";
+import axios from "axios";
 
 import PaperDashboard from "./plugins/paperDashboard";
 import "vue-notifyjs/themes/default.css";
 import "bootstrap/dist/css/bootstrap.css";
+
+Vue.use(VueAxios, axios);
 
 Vue.use(PaperDashboard);
 const config = {

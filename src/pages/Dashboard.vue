@@ -10,8 +10,8 @@
           </div>
           <p>{{stats.title}}</p>
           <div class="number" slot="content">
-            <p>{{stats.value}}</p>
-            {{stats.title}}
+            <p>{{stats.namerepo}}</p>
+            {{stats.fullnamerepo}}
           </div>
           <div class="stats" slot="footer">
             <i :class="stats.footerIcon"></i> {{stats.footerText}}
@@ -76,6 +76,7 @@
 <script>
 import { StatsCard, ChartCard } from "@/components/index";
 import Chartist from 'chartist';
+import firebase from "firebase";
 export default {
   components: {
     StatsCard,
@@ -86,40 +87,11 @@ export default {
    */
   data() {
     return {
-      statsCards: [
-        {
-          type: "",
-          icon: "ti-server",
-          title: "bitbucket.com/sunsunnp",
-          value: "PAM",
-          footerText: "Updated now",
-          footerIcon: "ti-reload"
+        data:{
+            repos:[],
+            
         },
-        {
-          type: "",
-          icon: "ti-github",
-          title: "github.com/sunsunnp",
-          value: "Project name",
-          footerText: "Last day",
-          footerIcon: "ti-calendar"
-        },
-        {
-          type: "",
-          icon: "ti-github",
-          title: "github.com/gog",
-          value: "Project name",
-          footerText: "In the last hour",
-          footerIcon: "ti-timer"
-        },
-        {
-          type: "",
-          icon: "ti-server",
-          title: "github.com/baszaza",
-          value: "Project name",
-          footerText: "Updated now",
-          footerIcon: "ti-reload"
-        }
-      ],
+      statsCards: [],
       usersChart: {
         data: {
           labels: [
@@ -192,24 +164,33 @@ export default {
     };
   },
   methods:{
-    Create() {
+  },
+  beforeCreate() {
     firebase.auth().onAuthStateChanged((user) => {
         if (!user) {
           router.push({ path: '/'})
           alert("You don't have a permission")
         }else{
-			    var username = user.displayName;
-			// console.log(username);
-			// axios.get('https://api.github.com/users/'+username+'/repos:read')
-			// .then(res => {
-			// console.log(res)
-			
-			// })
-			// .catch(error => console.log(error))
+            var database = firebase.database();
+            var messageRef = database.ref("Users");
+            var useremail = user.email;
+            var emaildb = [];
+            var i,j;
+            messageRef.on('child_added',snapshot=>{
+                emaildb.push(snapshot.val())
+                
+            })
+            for(i=0;i<emaildb.length;i++){
+                if(useremail == emaildb[i].email){
+                    for(j=0;j<emaildb[i].repos.name.length;j++){
+                        this.statsCards.push({namerepo:emaildb[i].repos.name[j],fullnamerepo:emaildb[i].repos.fullname[j],icon: "ti-github",footerIcon: "ti-calendar"})
+                    }
+                }
+            }
+            //console.log(this.statsCards)
         }
     });
     }
-  }
 };
 </script>
 <style>
