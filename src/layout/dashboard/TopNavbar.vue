@@ -31,8 +31,8 @@
           </drop-down>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="ti-mouse-alt"></i>
               <a @click="logout">
+              <i class="ti-mouse-alt"></i>
                 Logout
               </a>
             </a>
@@ -73,9 +73,9 @@ export default {
       this.$sidebar.displaySidebar(false);
     },
       logout() {
+        alert("Logout success");
         firebase.auth().signOut().then(function() {
           // Sign-out successful.
-          alert("Logout success");
           router.push({ path: '/'})
         }).catch(function(error) {
           // An error happened.

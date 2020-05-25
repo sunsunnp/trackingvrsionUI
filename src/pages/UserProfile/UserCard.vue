@@ -1,12 +1,12 @@
 <template>
   <card class="card-user">
     <div slot="image">
-      <img src="@/assets/img//faces/faceme.jpg" alt="...">
+      <img :src="imglogogit" alt="...">
     </div>
     <div>
       <div class="author">
-        <img class="avatar border-white" src="@/assets/img/faces/faceme.jpg" alt="...">
-        <h4 class="title">Sunsun np
+        <img class="avatar border-white" :src="imglogogit" alt="...">
+        <h4 class="title">{{name}}
           <br>
           <a href="#">
             <small>sunsunnp</small>
@@ -33,23 +33,22 @@
   </card>
 </template>
 <script>
+import firebase from "firebase";
 export default {
   data() {
     return {
       details: [
         {
-          title: "12",
+          title: "",
           subTitle: "Repositories"
         },
         {
-          title: "2",
+          title: "",
           subTitle: "Permissions"
-        },
-        {
-          title: "3",
-          subTitle: "members"
         }
-      ]
+      ],
+      imglogogit: '',
+      name:''
     };
   },
   methods: {
@@ -63,7 +62,37 @@ export default {
         return "col-lg-3";
       }
     }
-  }
+  },
+  beforeCreate() {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          this.imglogogit = user.photoURL;
+          this.name = user.displayName;
+          console.log(user);
+          var database = firebase.database();
+          var messageRef = database.ref("Users");
+          var useremail = user.email;
+          var emaildb = [];
+          var i,j,n=0;
+            messageRef.on('child_added',snapshot=>{
+                emaildb.push(snapshot.val())
+            })
+            for(i=0;i<emaildb.length;i++){
+                if(useremail == emaildb[i].email){
+                  this.details[0].title = emaildb[i].repos.name.length
+                  for(j=0;j<emaildb.length;j++){
+                    if(emaildb[j].permission == emaildb[i].email){
+                      n=n+1;
+                    }
+                  }
+                  console.log(emaildb[i].repos.name.length)
+                  this.details[1].title = n;
+                }
+            }
+
+        }
+    });
+    }
 };
 </script>
 <style>

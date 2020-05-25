@@ -135,10 +135,7 @@ export default {
   },
     beforeCreate() {
     firebase.auth().onAuthStateChanged((user) => {
-        if (!user) {
-          this.$router.replace("/")
-          alert("You don't have a permission")
-        }else{
+        if (user) {
           this.title = user.displayName;
           this.imglogogit = user.photoURL;
 			    //console.log(user);

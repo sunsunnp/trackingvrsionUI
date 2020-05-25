@@ -165,32 +165,45 @@ export default {
   },
   methods:{
   },
-  beforeCreate() {
+  created() {
     firebase.auth().onAuthStateChanged((user) => {
         if (!user) {
           router.push({ path: '/'})
-          alert("You don't have a permission")
+          //alert("You don't have a permission")
         }else{
             var database = firebase.database();
             var messageRef = database.ref("Users");
             var useremail = user.email;
             var emaildb = [];
-            var i,j;
+            var i,j,k,l;
             messageRef.on('child_added',snapshot=>{
                 emaildb.push(snapshot.val())
                 
             })
             for(i=0;i<emaildb.length;i++){
                 if(useremail == emaildb[i].email){
-                    for(j=0;j<emaildb[i].repos.name.length;j++){
-                        this.statsCards.push({namerepo:emaildb[i].repos.name[j],fullnamerepo:emaildb[i].repos.fullname[j],icon: "ti-github",footerIcon: "ti-calendar"})
+                    if(emaildb[i].type==1){
+                        for(j=0;j<emaildb[i].repos.name.length;j++){
+                            this.statsCards.push({namerepo:emaildb[i].repos.name[j],fullnamerepo:emaildb[i].repos.fullname[j],icon: "ti-github",footerIcon: "ti-calendar"})
+                        }
+                    }
+                    if(emaildb[i].type==2){
+                        if(emaildb[i].status==1){
+                            for(k=0;k<emaildb.length;k++){
+                            if(emaildb[i].permission == emaildb[k].email){
+                                for(l=0;l<emaildb[k].repos.name.length;l++){
+                                    this.statsCards.push({namerepo:emaildb[k].repos.name[l],fullnamerepo:emaildb[k].repos.fullname[l],icon: "ti-github",footerIcon: "ti-calendar"})
+                                }
+                            }
+                        }
+                        }
                     }
                 }
             }
-            //console.log(this.statsCards)
+          //console.log(this.statsCards)
         }
     });
-    }
+  }  
 };
 </script>
 <style>

@@ -3,18 +3,20 @@
     <div>
       <form @submit.prevent>
         <div class="row">
-          <div class="col-md-5">
+          <!-- <div class="col-md-5">
             <fg-input type="text"
                       label="Username"
                       placeholder="Username"
+					  v-model="emailcre"
                       >
             </fg-input>
-          </div>
+          </div> -->
          
           <div class="col-md-5">
             <fg-input type="email"
                       label="Email"
                       placeholder="Email"
+					  v-model="emailcre"
                       >
             </fg-input>
           </div>
@@ -25,6 +27,7 @@
             <fg-input type="text"
                       label="Password"
                       placeholder="Password"
+					  v-model="password"
                       >
             </fg-input>
           </div>
@@ -94,7 +97,7 @@
         <div class="text-center">
           <p-button type="info"
                     round
-                    @click.native.prevent="updateProfile">
+                    @click.native.prevent="addUser">
             Save
           </p-button>
         </div>
@@ -104,6 +107,7 @@
   </card>
 </template>
 <script>
+import firebase from "firebase";
 export default {
   data() {
     return {
@@ -117,14 +121,38 @@ export default {
         city: "Melbourne",
         postalCode: "",
         aboutMe: `We must accept finite disappointment, but hold on to infinite hope.`
-      }
+	  },
+	  emailcre:'',
+	  password:'',
+	  permis:''
     };
   },
   methods: {
     updateProfile() {
       alert("Your data: " + JSON.stringify(this.user));
+    },
+    addUser(){
+		var database = firebase.database();
+		var messageRef = database.ref("Users");
+		messageRef.push({email:this.emailcre,permission:this.permis,status:1,type:2});
+		alert("add permission success");
+    	firebase.auth().createUserWithEmailAndPassword(this.emailcre, this.password).catch(function(error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			// ...
+		});
     }
-  }
+  },
+  created() {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+		  var useremail = user.email;
+		  this.permis = useremail;
+		  console.log(this.permis)
+        }
+    });
+    }
 };
 </script>
 <style>

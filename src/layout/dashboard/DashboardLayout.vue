@@ -5,7 +5,7 @@
         <sidebar-link to="/dashboard/Project" name="Products" icon="ti-menu-alt"/>
         <!-- <sidebar-link to="/table-list" name="Repositories List" icon="ti-view-list-alt"/> -->
         <sidebar-link to="/dashboard/branchSetting" name="Customers" icon="ti-panel"/>
-        <sidebar-link to="/dashboard/stats" name="Permissions" icon="ti-user"/>
+        <sidebar-link to="/dashboard/stats"  name="Permissions" icon="ti-user"/>
         <!-- <sidebar-link to="/typography" name="Typography" icon="ti-text"/> -->
         <!-- <sidebar-link to="/icons" name="Icons" icon="ti-pencil-alt2"/> -->
         <!-- <sidebar-link to="/maps" name="Map" icon="ti-map"/>
@@ -56,6 +56,7 @@ import TopNavbar from "./TopNavbar.vue";
 import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./Content.vue";
 import MobileMenu from "./MobileMenu";
+import firebase from "firebase";
 export default {
   components: {
     TopNavbar,
@@ -63,12 +64,37 @@ export default {
     DashboardContent,
     MobileMenu
   },
+  data:{
+    typeuser:0
+  },
   methods: {
     toggleSidebar() {
       if (this.$sidebar.showSidebar) {
         this.$sidebar.displaySidebar(false);
       }
     }
-  }
+  },
+  created() {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          var database = firebase.database();
+          var messageRef = database.ref("Users");
+          var useremail = user.email;
+          var emaildb = [];
+          var i,j,k,l;
+            messageRef.on('child_added',snapshot=>{
+                emaildb.push(snapshot.val())
+            })
+            for(i=0;i<emaildb.length;i++){
+                if(useremail == emaildb[i].email){
+                  this.typeuser = emaildb[i].type;
+                }
+
+
+        }
+
+        }
+    });
+    }
 };
 </script>

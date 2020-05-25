@@ -71,7 +71,7 @@
         }
       }
       if(n==0){
-        messageRef.push({username:result.additionalUserInfo.username,email:result.user.email,repos:{name:namerepos,fullname:fullnamerepos}});
+        messageRef.push({username:result.additionalUserInfo.username,email:result.user.email,repos:{name:namerepos,fullname:fullnamerepos},type:1});
       }
 			router.push({ path: '/dashboard/Project'})
 			})
